@@ -167,7 +167,7 @@ end loop L3;
 
 
 
-L4: while(clock'event and clock ='1') loop
+
 zerodata("000101", "11111110", ld_high_var,ld_low_var,addr_var,din_var,zero_var,write_var);
 ld_high <= ld_high_var; 
 ld_low <= ld_low_var;
@@ -175,11 +175,7 @@ addr <=addr_var;
 din <= din_var; 
 zero <= zero_var;
 write <= write_var;
-j:=j+1;
-exit L4 when j = 6;
-end loop L4;
 
 end loop L1; 
-
 end process;
 end behaviour;
