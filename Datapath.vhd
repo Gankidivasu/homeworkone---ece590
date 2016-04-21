@@ -13,49 +13,49 @@ aEQb : out std_logic;
 dout: out std_logic_vector(7 downto 0);
 busy: out std_logic 
 );
-end DataPath;
-
+end DataPath; 
+ 
 architecture DataPath of DataPath is   
 
 signal dout_R1_din_a,dout_R2_din,dout_counter,M1_addr:std_logic_vector(5 downto 0); 
 --signal dina,dinb,dcnt,addrm: std_logic_vector(5 downto 0);
 --signal dinm:std_logic_vector(7 downto 0);
 signal M2_din:std_logic_vector(7 downto 0);
-signal temp: std_logic;
- 
+signal we:std_logic; 
+
 begin
-temp <= write or zero_we;
+we<=write or zero_we;     
 R1: entity work.registers  
---GENERIC MAP (size => 8)
-port map (
+GENERIC MAP (size => 6)
+port map (  
 
 load => ld_high, 
-dinreg => addr,
+din => addr,
 --dout => dout
-doutreg =>dout_R1_din_a 
+dout=>dout_R1_din_a  
 );
 
 R2: entity work.registers  
---GENERIC MAP (size => 8)
+GENERIC MAP (size => 6)
 port map (
 
 load => ld_low,
-dinreg => addr,
+din => addr,
 --dout => dcnt
-doutreg =>dout_R2_din
+dout=>dout_R2_din
 );
 
 counter: entity work.UpCounter 
---GENERIC MAP (size => 6)
+GENERIC MAP (size => 6)
 port map(
 
 clock => clock,
 --din => dcnt,
-dincounter => dout_R2_din, 
+din => dout_R2_din, 
 load => ld_cnt, 
 enable => cnt_en, 
 --dout => dinb
-doutcounter => dout_counter   
+dout => dout_counter   
 );
 
 JKFF: entity work.jkflipflop port map(
@@ -65,7 +65,7 @@ k => clr_busy,
 q => busy  
 );
 
-M1: entity work.Mux2x1
+M1: entity work.Mux2x1 
 GENERIC MAP (size => 6)
 port map(
 
@@ -73,7 +73,7 @@ port map(
 d1=>dout_counter,  
 d0=> addr,  
 selectbit => addr_sel,  
-doutmux => M1_addr
+dout => M1_addr
 
 );
 
@@ -84,7 +84,7 @@ port map(
 d1 => (others=>'0'),  
 d0 => din, 
 selectbit => addr_sel,
-doutmux => M2_din
+dout => M2_din
 );
 
 M7: entity work.comparator 
@@ -101,9 +101,9 @@ generic map(data_width=> 8, addr_width => 6, memory_width => 64)
 port map ( 
 
 addr => M1_addr, 
-dinmemory => M2_din,
-we => temp,  
-doutmemory => dout 
+din => M2_din,
+we => we,   
+dout => dout 
 );   
 
 end Datapath ; 

@@ -37,7 +37,7 @@ begin
 			ld_cnt<='0';
 			cnt_en<='0';
 			addr_sel<='0';
-			zero_we<='0';
+			zero_we<='0'; 
 		when LOAD=>
 			set_busy <='1';
 			clr_busy<='0';
@@ -61,7 +61,7 @@ begin
 	case present_state is
 		when INITIAL=>
 			if zero='1' then 
-				next_state <= LOAD;
+				next_state <= LOAD;report"Zero mode activated" ;
 			else 
 				next_state <=INITIAL; 
 			end if;
@@ -69,9 +69,9 @@ begin
 			next_state <= WR;
 		when WR=>
 			if cnt_eq='1' then
-				next_state <= INITIAL;
+				next_state <= INITIAL; report"returning to Normal Mode"; 
 			else 
-				next_state <= WR;
+				next_state <= WR; 
 			end if; 
 	end case;
 end process;
