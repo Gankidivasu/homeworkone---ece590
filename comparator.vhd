@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+-- declaring inputs and outputs 
 entity Comparator is 
 generic (size : integer := 6);
 port (dina: in std_logic_vector(size-1 downto 0);
@@ -7,13 +8,13 @@ port (dina: in std_logic_vector(size-1 downto 0);
 	  aEQb : out std_logic 
 	   );
 end Comparator;
-
+-- architecture declaration 
 architecture Comparator of Comparator is 
 begin 
 process (dina,dinb)
 begin
-if (dina = dinb) then 
-aEQb <= '1';
+if (dina = dinb) then -- checking the equality functionality 
+aEQb <= '1';  
 else 
 aEQb <= '0';
 end if;
